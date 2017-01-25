@@ -82,6 +82,7 @@ public class DemoApplication {
 				.filter(olderThan20.and(youngerThan20))
 				.forEach(namePrinterConsumer);
 
+		System.out.print("Test commit");
 	}
 
 	public static List<String> filterList(List<String> unfilteredList, Predicate<String> predicate) {
