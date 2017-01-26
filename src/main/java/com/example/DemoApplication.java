@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -17,8 +18,42 @@ public class DemoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-		test();
+		//test();
+        mapTest();
 	}
+
+	private static void mapTest() {
+
+	    List<Integer> list1 = Arrays.asList(1,2,3,4,5,6,7);
+        List<Integer> list2 = Arrays.asList(5,6,7);
+        List<Integer> list3 = Arrays.asList(2,3,4,5,6);
+
+        List<List<Integer>> listOfLists = Arrays.asList(list1, list2, list3);
+
+        System.out.println(listOfLists);
+
+        Consumer<Integer> sizePrinter = System.out::println;
+
+        listOfLists
+                .stream()
+                .map(integers -> integers.size())
+                .forEach(sizePrinter);
+
+        Function<List<?>, Integer> sizePicker = List::size;
+
+        listOfLists
+                .stream()
+                .map(sizePicker)
+                .forEach(sizePrinter);
+
+        Function<List<Integer>, Stream<Integer>> flatMapper = l -> l.stream();
+
+        listOfLists
+                .stream()
+                .flatMap(flatMapper)
+                .forEach(sizePrinter);
+
+    }
 
 	private static void test() {
 
