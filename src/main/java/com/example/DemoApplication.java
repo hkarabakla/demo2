@@ -5,12 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -19,8 +18,120 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 		//test();
-        mapTest();
+        //mapTest();
+        //reductionTest();
+        collectorTest();
 	}
+
+	private static void collectorTest() {
+        Person p1 = new Person(20, "Huseyin");
+        Person p2 = new Person(19, "Ali");
+        Person p3 = new Person(25, "Hasan");
+        Person p4 = new Person(34, "Mehmet");
+        Person p6 = new Person(34, "Keramettin");
+        Person p5 = new Person(34, "Mustafa");
+
+        List<Person> people = new ArrayList<>();
+        people.add(p1);
+        people.add(p2);
+        people.add(p3);
+        people.add(p4);
+        people.add(p6);
+        people.add(p5);
+
+        Predicate<Person> ageTest = person -> person.getAge() > 20;
+        Predicate<String> nameTest = name -> name.length() > 5;
+
+        String names = people
+                .stream()
+                .filter(ageTest)
+                .map(Person::getName)
+                .filter(nameTest)
+                .collect(Collectors.joining(" , "));
+
+        List<String> nameList = people
+                .stream()
+                .filter(ageTest)
+                .map(Person::getName)
+                .filter(nameTest)
+                .collect(Collectors.toList());
+
+        //Fully person map grouped by age
+        Map<Integer, List<Person>> peopleMap = people
+                .stream()
+                .filter(ageTest)
+                .collect(Collectors.groupingBy(Person::getAge));
+
+        //Map grouped by age and counting information
+        Map<Integer, Long> countingMap =people
+                .stream()
+                .filter(ageTest)
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.counting()));
+
+        //Map grouped by age and only names popped up as list
+        Map<Integer, List<String>> nameMapList = people
+                .stream()
+                .filter(ageTest)
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.mapping(
+                                Person::getName,
+                                Collectors.toList())));
+
+        //Map grouped by age and only names popped up as comma separated
+        Map<Integer, String> nameMapListComma = people
+                .stream()
+                .filter(ageTest)
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.mapping(
+                                Person::getName,
+                                Collectors.joining(" , ")
+                        )
+                ));
+
+        //Map grouped by age and only names popped up as ordered list
+        Map<Integer, Set<String>> nameMapListOrdered = people
+                .stream()
+                .filter(ageTest)
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.mapping(
+                                Person::getName,
+                                Collectors.toCollection(TreeSet::new)
+                        )
+                ));
+
+        //Map grouped by name length and only names popped up as list
+        Map<Integer, List<String>> nameMap = people
+                .stream()
+                .filter(ageTest)
+                .map(Person::getName)
+                .collect(Collectors.groupingBy(o -> o.length()));
+
+        System.out.println("Names : " + names);
+        System.out.println("Names : " + nameList);
+        System.out.println("People : " + peopleMap);
+        System.out.println("People : " + nameMapList);
+        System.out.println("People : " + nameMapListOrdered);
+        System.out.println("People : " + nameMapListComma);
+        System.out.println("People : " + countingMap);
+        System.out.println("Name Map : " + nameMap);
+    }
+
+	private static void reductionTest() {
+	    List<Integer> agesList = Arrays.asList(3,5,7,9);
+
+	    Optional<Integer> sum = agesList
+                .stream()
+                .filter(integer -> integer < 5)
+                .reduce(Integer::max);
+
+	    System.out.println("Sum : " + sum);
+
+    }
 
 	private static void mapTest() {
 
