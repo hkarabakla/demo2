@@ -22,8 +22,11 @@ public class DemoApplication {
         //reductionTest();
         //collectorTest();
 
-		DateOperations d = new DateOperations();
-		d.testDate();
+		//DateOperations d = new DateOperations();
+		//d.testDate();
+
+        StringOperations op = new StringOperations();
+        op.testStringFeatures();
 	}
 
 	private static void collectorTest() {
