@@ -20,7 +20,10 @@ public class DemoApplication {
 		//test();
         //mapTest();
         //reductionTest();
-        collectorTest();
+        //collectorTest();
+
+		DateOperations d = new DateOperations();
+		d.testDate();
 	}
 
 	private static void collectorTest() {
