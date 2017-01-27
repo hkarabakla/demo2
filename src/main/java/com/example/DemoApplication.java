@@ -25,8 +25,10 @@ public class DemoApplication {
 		//DateOperations d = new DateOperations();
 		//d.testDate();
 
-        StringOperations op = new StringOperations();
-        op.testStringFeatures();
+        //StringOperations op = new StringOperations();
+        //op.testStringFeatures();
+		MapOperations mapOperations = new MapOperations();
+		mapOperations.testMap();
 	}
 
 	private static void collectorTest() {
